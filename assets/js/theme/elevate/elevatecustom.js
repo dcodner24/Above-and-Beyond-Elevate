@@ -611,6 +611,9 @@ export default (function () {
         */
         $(document).ready(function () {
             let productOptions = document.querySelectorAll('[data-product-option-change]')
+            let month = ""
+            let day = ""
+            let year = ""
 
             function handleLabelUpdate(event) {
                 // For Dev Purposes
@@ -652,6 +655,54 @@ export default (function () {
                         optionValueSpan.textContent = event.target.nextElementSibling.textContent;
                     }
                 }
+
+                else if (event.target.type === "select-one") {
+
+                    // Special logic for calendars to differentiate between normal dropdowns
+                    if (event.target.getAttribute('class').includes("date")) {
+
+
+                        // Store variables to concatenate full date, reorder to fit desired format
+                        if (event.target.getAttribute('name').includes('month')) {
+                            month = event.target.selectedOptions[0].textContent
+                        }
+                        else if (event.target.getAttribute('name').includes('day')) {
+                            day = event.target.selectedOptions[0].textContent
+                        }
+                        else {
+                            year = event.target.selectedOptions[0].textContent
+                        }
+
+                        // Concatenate all strings
+                        if (month && !day && !year) {
+                            optionValueSpan.textContent = `${month}`
+                        }
+                        if (month && day && !year) {
+                            optionValueSpan.textContent = `${month} ${day}`
+                        }
+                        if (month && day && year) {
+                            optionValueSpan.textContent = `${month} ${day}, ${year}`
+                        }
+
+
+                    }
+                    //Normal dropdown logic
+                    else {
+                        optionValueSpan.textContent = event.target.selectedOptions[0].textContent
+                    }
+                }
+
+                // Number Entry Logic
+                else if (event.target.type === "number") {
+                    optionValueSpan.textContent = event.target.value
+                }
+
+                // TextBox Logic
+                else if (event.target.type === "text" || "textarea") {
+                    optionValueSpan.textContent = event.target.value
+                }
+
+                // Catch missing option sets
                 else {
                     console.warn("No Logic for Event Type")
                 }
