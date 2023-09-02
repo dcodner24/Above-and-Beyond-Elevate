@@ -610,20 +610,7 @@ export default (function () {
         
         */
         $(document).ready(function () {
-
-            let checks = document.querySelectorAll('input[type="checkbox"]')
-            let dates = document.querySelectorAll('[data-product-attribute="date"]')
-            // let dropdowns = document.querySelectorAll('form')
-            // let multiText = document.querySelectorAll('')
-            // let nums = document.querySelectorAll('')
-            // let prodPicks = document.querySelectorAll('')
-            // let radios = document.querySelectorAll('')
-            // let rectangle = document.querySelectorAll('')
-
-            //Handler for Cehckbdx Updates
-            $(checks).change(handleLabelUpdate);
-            $(dates).change(handleLabelUpdate);
-
+            let productOptions = document.querySelectorAll('[data-product-option-change]')
 
             function handleLabelUpdate(event) {
                 // For Dev Purposes
@@ -648,11 +635,26 @@ export default (function () {
                         optionValueSpan.textContent = ""
                     }
                 }
+                // Update any radio option that is interacted with
+                else if (event.target.type === "radio") {
+                    // Special logic for swatches due to different DOM formatting
+
+                    if (event.target.getAttribute('id').includes("swatch")) {
+                        optionValueSpan.textContent = event.target.nextElementSibling.querySelector('span').title
+                    }
+
+                    // All Other Radio Options
+                    else {
+                        optionValueSpan.textContent = event.target.nextElementSibling.textContent;
+                    }
+                }
                 else {
                     console.warn("No Logic for Event Type")
                 }
             }
 
+            // Event Listener to monitor product options for changes
+            $(productOptions).change(handleLabelUpdate);
         });
 
     });
