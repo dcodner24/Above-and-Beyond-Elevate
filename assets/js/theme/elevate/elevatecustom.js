@@ -627,18 +627,22 @@ export default (function () {
 
                 //Update the Checkbox that was interacted with
                 if (event.target.type === "checkbox") {
+
+                    //Change this value to determine the message you want to see when box is checked
                     if (event.target.checked) {
-                        //Change this value to determine the message you want to see when box is checked
                         optionValueSpan.textContent = "Test"
                     }
+
+                    // Reset checkbox if unchecked
                     else {
                         optionValueSpan.textContent = ""
                     }
                 }
+
                 // Update any radio option that is interacted with
                 else if (event.target.type === "radio") {
-                    // Special logic for swatches due to different DOM formatting
 
+                    // Special logic for swatches due to different DOM formatting
                     if (event.target.getAttribute('id').includes("swatch")) {
                         optionValueSpan.textContent = event.target.nextElementSibling.querySelector('span').title
                     }
