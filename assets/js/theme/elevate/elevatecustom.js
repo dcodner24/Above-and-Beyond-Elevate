@@ -610,35 +610,59 @@ export default (function () {
         
         */
         $(document).ready(function () {
-            console.log("DOM is loaded");
+            
             let checks = document.querySelectorAll('input[type="checkbox"]')
             let dates = document.querySelectorAll('[data-product-attribute="date"]')
+            // let dropdowns = document.querySelectorAll('')
+            // let multiText = document.querySelectorAll('')
+            // let nums = document.querySelectorAll('')
+            // let prodPicks = document.querySelectorAll('')
+            // let radios = document.querySelectorAll('')
+            // let rectangle = document.querySelectorAll('')
 
             //Handler for Cehckbdx Updates
-            $(checks).change(function (event) {
-                checks.forEach(function (check) {
-                    let label = check.previousElementSibling.previousElementSibling.querySelector('[data-option-value]');
-                    console.log(check)
-                    if(check.checked){
-                        //Change this value to determine the message you want to see when box is checked
-                        label.textContent = "Test"
-                    }
-                    else{
-                        label.textContent = ""
-                    }
-                })
-            });
-
-            
+            $(checks).change(handleLabelUpdate);
+            $(dates).change(handleLabelUpdate);
 
 
+            function handleLabelUpdate(event) {
+                console.log(event.target.type)
+                let formField = event.target.closest(".form-field");
+                if (!formField) return;
+                let optionValueSpan = formField.querySelector("[data-option-value]");
+                if (!optionValueSpan){
+                    console.warn("Label Not Found")
+                };
 
 
-
-
-
-
+                //Update the Checkbox that was interacted with
+                if (event.target.type === "checkbox") {
+                    checks.forEach(function (check) {
+                        if (check.checked) {
+                            //Change this value to determine the message you want to see when box is checked
+                            optionValueSpan.textContent = "Test"
+                        }
+                        else {
+                            optionValueSpan.textContent = ""
+                        }
+                    });
+                }
+                else {
+                    console.warn("No Logic for Event Type")
+                }
+            }
 
         });
+
     });
+
+
+
+
+
+
+
+
+
 });
+
